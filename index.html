@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Diário de Cassidy</title>
+  <style>
+    .popup-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .popup {
+      background: #1a0000;
+      border: 2px solid #ff2222;
+      border-radius: 12px;
+      box-shadow: 0 0 30px #ff2222;
+      padding: 40px 60px;
+      text-align: center;
+      color: #ff2222;
+      font-size: 2em;
+      font-family: 'Courier New', Courier, monospace;
+      position: relative;
+      overflow: hidden;
+    }
+    .popup .glitch {
+      color: #ff2222;
+      animation: glitch 0.4s linear 0s 1 normal;
+      text-shadow: none;
+      display: inline-block;
+    }
+    @keyframes glitch {
+      0% { opacity: 1; transform: none; }
+      20% { opacity: 0.7; transform: skewX(-2deg); }
+      40% { opacity: 0.5; transform: skewX(2deg) scaleY(1.05); }
+      60% { opacity: 0.7; transform: skewX(-1deg); }
+      80% { opacity: 1; transform: none; }
+      100% { opacity: 1; transform: none; }
+    }
+    .popup button {
+      margin-top: 30px;
+      padding: 14px 38px;
+      font-size: 1.2em;
+      background: linear-gradient(90deg, #2a0000 60%, #660000 100%);
+      color: #ff2222;
+      border: 2px solid #ff2222;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 18px #000, 0 0 8px #ff2222 inset;
+      letter-spacing: 2px;
+      text-shadow: 0 0 6px #ff2222, 0 0 2px #000;
+      font-family: 'Courier New', Courier, monospace;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .popup button:hover {
+      background: linear-gradient(90deg, #660000 60%, #2a0000 100%);
+      color: #fff;
+      border-color: #fff;
+      box-shadow: 0 0 24px #ff2222, 0 0 12px #000 inset;
+      text-shadow: 0 0 12px #fff, 0 0 2px #ff2222;
+    }
+    body {
+      margin: 0;
+      padding: 50px;
+      font-family: 'Courier New', Courier, monospace;
+      background: url('floresta-foda.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #e0e0e0;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: auto;
+      cursor: url('https://i.imgur.com/3pXclXQ.png'), auto;
+    }
+    h1 {
+      text-align: center;
+      font-size: 3em;
+      color: #ff6666;
+      position: relative;
+      text-shadow: 1px 1px 5px #990000;
+    }
+    .text {
+      white-space: pre-wrap;
+      font-size: 1.2em;
+      animation: flicker 6s infinite;
+    }
+    @keyframes flicker {
+      0%, 90%, 100% { opacity: 1; filter: blur(0px); }
+      91%, 95% { opacity: 0.8; filter: blur(0.5px); }
+    }
+    .text:hover {
+      text-shadow: 0 0 8px #ff0000, 0 0 15px #ff4444;
+    }
+    .diario-popup {
+      background: rgba(26,0,0,0.92);
+      border: 2px solid #ff2222;
+      border-radius: 12px;
+      box-shadow: 0 0 30px #ff2222;
+      padding: 40px 60px;
+      color: #ff2222;
+      font-size: 1.2em;
+      font-family: 'Courier New', Courier, monospace;
+      max-width: 800px;
+      margin: 40px auto;
+      position: relative;
+      animation: fadeIn 1.2s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98);}
+      to { opacity: 1; transform: scale(1);}
+    }
+    /* Senha Popup */
+    .senha-popup {
+      background: #1a0000;
+      border: 2px solid #ff2222;
+      border-radius: 12px;
+      box-shadow: 0 0 30px #ff2222;
+      padding: 40px 60px;
+      color: #ff2222;
+      font-size: 1.2em;
+      max-width: 400px;
+      text-align: center;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 10000;
+      display: none;
+    }
+    .senha-popup input {
+      margin-top: 18px;
+      padding: 10px;
+      font-size: 1.1em;
+      border-radius: 8px;
+      border: 2px solid #ff2222;
+      background: #000;
+      color: #ff2222;
+      width: 90%;
+      box-sizing: border-box;
+      font-family: 'Courier New', Courier, monospace;
+      outline: none;
+      text-align: center;
+    }
+    .senha-popup button {
+      margin-top: 22px;
+      padding: 12px 32px;
+      font-size: 1.1em;
+      background: linear-gradient(90deg, #1a0000 60%, #660000 100%);
+      color: #ff2222;
+      border: 2px solid #ff2222;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 12px #ff2222 inset;
+      font-family: 'Courier New', Courier, monospace;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+    }
+    .senha-popup button:hover {
+      background: linear-gradient(90deg, #660000 60%, #1a0000 100%);
+      color: #fff;
+      border-color: #fff;
+      box-shadow: 0 0 24px #ff2222, 0 0 12px #000 inset;
+      text-shadow: 0 0 12px #fff, 0 0 2px #ff2222;
+    }
+    .senha-popup .error {
+      color: #ff2222;
+      margin-top: 10px;
+      font-size: 1em;
+      min-height: 24px;
+      font-family: 'Courier New', Courier, monospace;
+      animation: glitch 0.4s linear 0s 1 normal;
+    }
+    /* Paredão de texto Cinder */
+    .paredao-cinder {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 9998;
+      color: #ff2222;
+      font-size: 2.5em;
+      font-family: 'Courier New', Courier, monospace;
+      opacity: 0;
+      transition: opacity 0.3s;
+      background: transparent;
+      white-space: pre;
+      overflow: auto;
+      text-align: center;
+      padding-top: 10vh;
+      user-select: none;
+    }
+    .paredao-cinder.visible {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="popup-bg" id="popup-bg">
+    <div class="popup">
+      <span class="glitch" id="glitch-title">Diário de Cassidy</span><br>
+      <span class="glitch" id="glitch-msg" style="font-size:0.7em; display:block; margin-top:18px;">
+        Você está prestes a acessar memórias que não deveriam ser lidas.
+      </span>
+      <button id="ler-btn">Ler</button>
+    </div>
+  </div>
+
+  <h1 id="main-title" style="display:none;">Diário de Cassidy</h1>
+
+  <div id="diario-dialog" style="display:none;">
+    <div class="diario-popup">
+      <div class="text" id="diario-text">
+Sinto o ar pesado, como se algo respirasse antes de mim,
+o quarto parece menor a cada dia, as sombras alongam-se nos cantos como se tivessem vontade própria,
+cada vez que fecho os olhos, ele está lá, sempre no mesmo ponto, parado, imóvel, mas eu sei que me observa,
+o vento traz ecos de passos que não caminharam aqui, mas parecem sempre próximos.
+
+Acordo com as mãos marcadas, pequenas arranhaduras ou cortes superficiais que eu não lembro de ter feito,
+o cheiro de terra e fumaça impregnou minha pele, mesmo que eu tome banho,
+tudo que toco parece escapar antes de ser meu, cadernos que somem, objetos que aparecem em lugares errados,
+o silêncio agora carrega palavras que não entendo, mas sinto que obedecer é inevitável.
+
+Meu corpo se curva sozinho, como se tivesse vontade própria,
+a fumaça escorre pelas juntas, pelos dedos, e sinto que posso me tornar nada a qualquer momento,
+o tempo já não é linear, cada minuto é reflexo de outro que não vivi, e ainda assim sinto a mesma dor, o mesmo peso,
+os espelhos refletem mais do que deveriam, meu rosto parece desfigurado, meus olhos se alongam, minhas mãos se movem sozinhas.
+
+Olhe para a margem da visão, entre as árvores, atrás da porta, ele observa,
+não há como escapar, mas há algo a aprender se você observar com atenção,
+às vezes ouço vozes sussurrando meu nome, longe, mas dentro da minha própria cabeça,
+são suaves, insistentes, como se me guiassem para algum lugar que eu não quero ir, mas sinto que devo seguir.
+
+Rabiscos aparecem em meus cadernos, símbolos que não escrevi,
+eles formam padrões hipnóticos que me atraem e me repelem ao mesmo tempo,
+as páginas se amontoam e se espalham sozinhas, como se tivessem vontade própria,
+sinto que cada linha me puxa para dentro de algo que não posso nomear.
+
+Ecoam sussurros que ninguém mais ouve,
+se você ouvir, não responda, eles chamam pelo meu nome, e cada chamada arranca um pedaço de quem eu era,
+às vezes sinto que estou me apagando, desaparecendo lentamente, deixando apenas esta forma que o mundo vê.
+
+Eu ainda estou aqui, mas não sou mais apenas eu,
+ele está comigo, dentro de mim, e a cada noite a distância entre Cassidy e ele diminui,
+sinto minhas memórias se confundirem, momentos felizes se misturam a pesadelos, e não consigo mais distinguir onde termina Cassidy e onde começa ele,
+tudo que conhecia agora parece uma ilusão, uma máscara que eu uso para enganar o mundo, ou talvez a mim mesma.
+      </div>
+    </div>
+  </div>
+  <button id="explore-btn" style="display:none; margin:40px auto; display:block; font-size:1.3em; background:#1a0000; color:#ff6666; border:2px solid #ff6666; border-radius:12px; padding:16px 40px; cursor:pointer; box-shadow:0 0 12px #990000; font-family:'Courier New', Courier, monospace;">Ir mais a fundo</button>
+  <audio id="bg-music" src="musica.mp3.mp3">
+    Seu navegador não suporta áudio.
+  </audio>
+  <div class="senha-popup" id="senha-popup">
+    <div>
+      <span class="glitch" id="senha-title">Digite a senha para acessar a próxima página:</span>
+    </div>
+    <input type="password" id="senha-input" autocomplete="off" placeholder="Senha...">
+    <button id="senha-btn">Acessar</button>
+    <div class="error" id="error-msg"></div>
+  </div>
+  <div class="paredao-cinder" id="paredao-cinder"></div>
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    const audio = document.getElementById('bg-music');
+    const popupBg = document.getElementById('popup-bg');
+    const lerBtn = document.getElementById('ler-btn');
+    const mainTitle = document.getElementById('main-title');
+    const diarioDialog = document.getElementById('diario-dialog');
+    const diarioText = document.getElementById('diario-text');
+    const exploreBtn = document.getElementById('explore-btn');
+    const glitchTitle = document.getElementById('glitch-title');
+    const glitchMsg = document.getElementById('glitch-msg');
+    const senhaPopup = document.getElementById('senha-popup');
+    const senhaBtn = document.getElementById('senha-btn');
+    const senhaInput = document.getElementById('senha-input');
+    const errorMsg = document.getElementById('error-msg');
+    const senhaTitle = document.getElementById('senha-title');
+    const paredaoCinder = document.getElementById('paredao-cinder');
+
+    mainTitle.style.display = 'none';
+    diarioDialog.style.display = 'none';
+    exploreBtn.style.display = 'none';
+    senhaPopup.style.display = 'none';
+
+    lerBtn.addEventListener('click', function() {
+      audio.currentTime = 0;
+      audio.muted = false;
+      audio.play();
+      popupBg.style.display = 'none';
+      mainTitle.style.display = '';
+      diarioDialog.style.display = '';
+      exploreBtn.style.display = '';
+    });
+
+    exploreBtn.addEventListener('click', function() {
+      senhaPopup.style.display = 'block';
+      senhaInput.focus();
+    });
+
+    // Efeito de glitch ocasional no popup
+    function randomGlitch(el) {
+      el.classList.remove('glitch');
+      if (Math.random() < 0.3) {
+        el.classList.add('glitch');
+        setTimeout(() => el.classList.remove('glitch'), 400);
+      }
+    }
+    setInterval(() => {
+      randomGlitch(glitchTitle);
+      randomGlitch(glitchMsg);
+      randomGlitch(senhaTitle);
+    }, 1800);
+
+    // Efeito de glitch ocasional no texto do diário
+    function glitchDiarioText() {
+      const lines = diarioText.querySelectorAll('span, br, div');
+      lines.forEach(el => {
+        el.classList.remove('glitch');
+        if (Math.random() < 0.15) {
+          el.classList.add('glitch');
+          setTimeout(() => el.classList.remove('glitch'), 400);
+        }
+      });
+    }
+    setInterval(() => {
+      if (diarioDialog.style.display !== 'none') {
+        glitchDiarioText();
+      }
+    }, 2000);
+
+    // Senha
+    senhaBtn.addEventListener('click', function() {
+      if (senhaInput.value === "Cinder") {
+        window.location.href = "chat.html";
+      } else {
+        errorMsg.textContent = "Senha incorreta.";
+        errorMsg.classList.add('glitch');
+        setTimeout(() => errorMsg.classList.remove('glitch'), 400);
+      }
+    });
+    senhaInput.addEventListener('keydown', function(e) {
+      if (e.key === "Enter") {
+        senhaBtn.click();
+      }
+    });
+
+    // Paredão de texto Cinder ao selecionar fundo
+    function showParedao() {
+      let cinderText = "";
+      for (let i = 0; i < 40; i++) {
+        cinderText += "Cinder ".repeat(20) + "\n";
+      }
+      paredaoCinder.textContent = cinderText;
+      paredaoCinder.classList.add('visible');
+    }
+    function hideParedao() {
+      paredaoCinder.classList.remove('visible');
+    }
+    document.body.addEventListener('selectstart', function(e) {
+      showParedao();
+    });
+    document.body.addEventListener('mouseup', function(e) {
+      hideParedao();
+    });
+    document.body.addEventListener('keyup', function(e) {
+      hideParedao();
+    });
+  });
+</script>
+</body>
+</html>
